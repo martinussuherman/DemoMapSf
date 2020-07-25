@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+﻿using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using Syncfusion.EJ2.Maps;
 
 namespace DemoMapSf.Pages
@@ -30,39 +26,62 @@ namespace DemoMapSf.Pages
         };
 
         public string BingKey => _configuration.GetValue<string>("BingKey");
-        
+
+        public object MapsMarker => ReadMarkerFromFile();
+
+        public MapsMarkerClusterSettings MapsMarkerClusterSettings => new MapsMarkerClusterSettings
+        {
+            AllowClusterExpand = true,
+            AllowClustering = true,
+            Shape = MarkerType.Image,
+            Height = 40,
+            Width = 40,
+            ImageUrl = Url.Content("~/cluster.svg"),
+            LabelStyle = new MapsFont
+            {
+                Color = "White"
+            }
+        };
+
+        public MapsTooltipSettings MapsTooltipSettings => new MapsTooltipSettings
+        {
+            Visible = true,
+            ValuePath = "city"
+        };
+
         public void OnGet()
         {
-            var marker = new List<MapsMarker>
-            {
-                new MapsMarker()
-                {
-                    Height= 60
-                }
-            };
-            var tooltip = new MapsTooltipSettings
-            {
-                Visible = true,
-                ValuePath = "city"
-            };
+            // MapsLayer mapsLayer = new MapsLayer
+            // {
+            //     LayerType = ShapeLayerType.Bing,
+            //     BingMapType = BingMapType.AerialWithLabel
+            // };
+
+            // MapsZoomSettings mapsZoomSettings = new MapsZoomSettings
+            // {
+
+            // };
+
+            // var marker = new List<MapsMarker>
+            // {
+            //     new MapsMarker()
+            //     {
+            //         Height= 60
+            //     }
+            // };
         }
 
-        // public IActionResult MarkerCluster()
-        // {
-        //     ViewBag.world = WorldMap();
-        //     ViewBag.marker =  Clustersettings();
-        //     return View();
-        // }
         // public object WorldMap()
         // {
         //     string allText = System.IO.File.ReadAllText("./wwwroot/scripts/MapsData/WorldMap.json");
         //     return JsonConvert.DeserializeObject(allText);
         // }
-        // public object Clustersettings()
-        // {
-        //     string allText = System.IO.File.ReadAllText("./wwwroot/scripts/MapsData/markercluster.js");
-        //     return JsonConvert.DeserializeObject(allText);
-        // }
+
+        private object ReadMarkerFromFile()
+        {
+            string allText = System.IO.File.ReadAllText("./wwwroot/markercluster.js");
+            return JsonConvert.DeserializeObject(allText);
+        }
 
         private readonly ILogger<IndexModel> _logger;
         private readonly IConfiguration _configuration;
