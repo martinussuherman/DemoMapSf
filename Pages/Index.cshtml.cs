@@ -51,23 +51,26 @@ namespace DemoMapSf.Pages
 
         public void OnGet()
         {
+            // MapsZoomSettings mapsZoomSettings = new MapsZoomSettings
+            // {
+            //     ToolBarOrientation = Orientation.Vertical
+            // };
+
+            // Maps maps = new Maps
+            // {
+            //     ZoomSettings = mapsZoomSettings
+            // };
+
             // MapsLayer mapsLayer = new MapsLayer
             // {
             //     LayerType = ShapeLayerType.Bing,
             //     BingMapType = BingMapType.AerialWithLabel
             // };
 
-            // MapsZoomSettings mapsZoomSettings = new MapsZoomSettings
+            // MapsMarker marker = new MapsMarker
             // {
-
-            // };
-
-            // var marker = new List<MapsMarker>
-            // {
-            //     new MapsMarker()
-            //     {
-            //         Height= 60
-            //     }
+            //     Shape = MarkerType.Circle,
+            //     Fill = "#ff0000"
             // };
         }
 

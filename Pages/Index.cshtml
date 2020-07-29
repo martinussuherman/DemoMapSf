@@ -31,31 +31,34 @@
     useGroupingSeparator="true" 
     load="window.onMapLoad">
 
-    <e-maps-titlesettings 
+    @* <e-maps-titlesettings 
         alignment="@Syncfusion.EJ2.Maps.Alignment.Center" 
         text="Protaru Demo" 
         textStyle="titleStyle">
-    </e-maps-titlesettings>
+    </e-maps-titlesettings> *@
 
     <e-maps-zoomsettings 
         enable="true" 
         toolbars="Model.Toolbars" 
         pinchZooming="true" 
         shouldZoomInitially="true" 
-        horizontalAlignment="Near">
+        horizontalAlignment="Near"
+        toolBarOrientation="@Orientation.Vertical">
     </e-maps-zoomsettings>
 
     <e-maps-layers>
         @* <e-maps-layer shapeData="ViewBag.world" markerClusterSettings="cluster"> *@
         <e-maps-layer 
-            LayerType="OSM" 
+            layerType="Bing" 
+            bingMapType="AerialWithLabel" 
+            key="@Model.BingKey"
             markerClusterSettings="Model.MapsMarkerClusterSettings">
             <e-layersettings-shapesettings fill="#C1DFF5"></e-layersettings-shapesettings>
             <e-layersettings-markers>
                 <e-layersettings-marker 
                     visible="true" 
-                    shape="Image" 
-                    imageUrl="@Url.Content("~/ballon.png")"
+                    shape="Circle"
+                    fill="#ff0000"
                     height="20" 
                     width="20" 
                     animationDuration="0" 
@@ -74,9 +77,3 @@
         </div>
     </div>
 </div>
-
-@* <ejs-maps id="maps">
-    <e-maps-layers>
-        <e-maps-layer layerType="Bing" bingMapType="AerialWithLabel" key="@Model.BingKey"></e-maps-layer>
-    </e-maps-layers>
-</ejs-maps> *@
