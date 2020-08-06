@@ -31,6 +31,11 @@
     useGroupingSeparator="true" 
     load="window.onMapLoad">
 
+    <e-maps-centerposition
+        latitude="-2.8"
+        longitude = "118">
+    </e-maps-centerposition>
+
     @* <e-maps-titlesettings 
         alignment="@Syncfusion.EJ2.Maps.Alignment.Center" 
         text="Protaru Demo" 
@@ -41,9 +46,10 @@
         enable="true" 
         toolbars="Model.Toolbars" 
         pinchZooming="true" 
-        shouldZoomInitially="true" 
+        shouldZoomInitially="false" 
         horizontalAlignment="Near"
-        toolBarOrientation="@Orientation.Vertical">
+        toolBarOrientation="@Orientation.Vertical"
+        zoomFactor="5">
     </e-maps-zoomsettings>
 
     <e-maps-layers>
@@ -70,10 +76,9 @@
     </e-maps-layers>
 </ejs-maps>
 
-<div id="template" style="display: none;">
-    <div>
-        <div style="margin-left:8px;height:45px;width:120px;margin-top:-23px;">
-            <label style="color:black;margin-left:15px;font-weight:normal;">\{\{\:city\}\}</label>
-        </div>
+<div id="tooltip-template" style="display: none;">
+    <div class="protaru-tooltip">
+        <h4>${city}</h4>
+        <p>${area}</p>
     </div>
 </div>

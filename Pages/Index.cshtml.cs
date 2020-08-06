@@ -45,6 +45,7 @@ namespace DemoMapSf.Pages
 
         public MapsTooltipSettings MapsTooltipSettings => new MapsTooltipSettings
         {
+            // Template = "#tooltip-template",
             Visible = true,
             ValuePath = "city"
         };
@@ -58,7 +59,15 @@ namespace DemoMapSf.Pages
 
             // Maps maps = new Maps
             // {
-            //     ZoomSettings = mapsZoomSettings
+            //     CenterPosition = new MapsCenterPosition
+            //     {
+            //         Latitude = -2.15,
+            //         Longitude = 118
+            //     },
+            //     ZoomSettings = new MapsZoomSettings
+            //     {
+            //         ZoomFactor = 3
+            //     }
             // };
 
             // MapsLayer mapsLayer = new MapsLayer
