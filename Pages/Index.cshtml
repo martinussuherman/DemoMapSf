@@ -1,23 +1,11 @@
 ﻿@page
 @model IndexModel
 
-@using Syncfusion.EJ2;
 @using Syncfusion.EJ2.Maps;
+@using Newtonsoft.Json;
 
 @{
     ViewData["Title"] = "Home page";
-
-    var marker = new List<MapsMarker>
-    {
-        new MapsMarker
-        {
-            Visible=true, 
-            Template="#template", 
-            DataSource=Model.MapsMarker
-            @* Shape=MarkerType.Balloon, 
-            LegendText="city",  *@
-        }
-    };
 
     var titleStyle = new MapsFont
     {
@@ -27,14 +15,14 @@
 
 <ejs-maps 
     id="maps" 
+    centerPosition="Model.CenterPosition"
     format="n" 
+    tooltipDisplayMode="DoubleClick"
     useGroupingSeparator="true" 
-    load="window.onMapLoad">
-
-    <e-maps-centerposition
-        latitude="-2.8"
-        longitude = "118">
-    </e-maps-centerposition>
+    zoomSettings="Model.ZoomSettings">
+    @* load="window.onMapLoad" *@
+    @* markerClick="window.markerClicked" *@
+    @* tooltipDisplayMode="Click" *@
 
     @* <e-maps-titlesettings 
         alignment="@Syncfusion.EJ2.Maps.Alignment.Center" 
@@ -42,43 +30,52 @@
         textStyle="titleStyle">
     </e-maps-titlesettings> *@
 
-    <e-maps-zoomsettings 
-        enable="true" 
-        toolbars="Model.Toolbars" 
-        pinchZooming="true" 
-        shouldZoomInitially="false" 
-        horizontalAlignment="Near"
-        toolBarOrientation="@Orientation.Vertical"
-        zoomFactor="5">
-    </e-maps-zoomsettings>
+    @* <e-maps-annotations>
+        <e-maps-annotation content="#annotation-template" x="0%" y="0%"></e-maps-annotation>
+    </e-maps-annotations> *@
 
     <e-maps-layers>
-        @* <e-maps-layer shapeData="ViewBag.world" markerClusterSettings="cluster"> *@
         <e-maps-layer 
             layerType="Bing" 
             bingMapType="AerialWithLabel" 
             key="@Model.BingKey"
-            markerClusterSettings="Model.MapsMarkerClusterSettings">
-            <e-layersettings-shapesettings fill="#C1DFF5"></e-layersettings-shapesettings>
-            <e-layersettings-markers>
-                <e-layersettings-marker 
-                    visible="true" 
-                    shape="Circle"
-                    fill="#ff0000"
-                    height="20" 
-                    width="20" 
-                    animationDuration="0" 
-                    tooltipSettings="Model.MapsTooltipSettings" 
-                    dataSource="Model.MapsMarker">
-                </e-layersettings-marker>
-            </e-layersettings-markers>
+            markerClusterSettings="Model.ClusterSettings"
+            markerSettings="Model.MarkerSettings">
         </e-maps-layer>
     </e-maps-layers>
 </ejs-maps>
 
 <div id="tooltip-template" style="display: none;">
-    <div class="protaru-tooltip">
-        <h4>${city}</h4>
-        <p>${area}</p>
-    </div>
+	<div class="protaru-tooltip p-2">
+        <h5 class="text-center">${location}</h5>
+        <h6 class="text-center">${rtr}</h6>
+        <p class="mb-0">Progress: ${progress}</p>
+        <p class="mb-0">Surat Rekom Gub: ${rekomGub}</p>
+        <p class="mb-0">Rapat Lintas Sektor: ${linSek}</p>
+        <p class="mb-0">Surat Persetujuan Substansi: ${perSub}</p>
+        <p class="mb-0">No. Perda: ${perda}</p>
+        <a href="${link}" class="btn btn-primary btn-block p-0">Detail</a>
+	</div>
 </div>
+
+<div id="annotation-template" style="display: none;">
+</div>
+
+<script>
+    function markerClicked(args) 
+    {
+        x = args.x;
+        y = args.y;
+        @* $(".protaru-tooltip").attr("style", "position: absolute;"); *@
+        $(".protaru-tooltip").html(
+            '<h5 class="text-center">' + args.data.location + '</h5>' +
+            '<h6 class="text-center">' + args.data.rtr + '</h6>' +
+            '<p class="mb-0">Progress: ' + args.data.progress + '</p>' +
+            '<p class="mb-0">Surat Rekom Gub: ' + args.data.rekomGub + '</p>' +
+            '<p class="mb-0">Rapat Lintas Sektor: ' + args.data.linSek + '</p>' +
+            '<p class="mb-0">Surat Persetujuan Substansi: ' + args.data.perSub + '</p>' +
+            '<p class="mb-0">No. Perda: ' + args.data.perda + '</p>' +
+            '<button onclick="linkClicked()" class="btn btn-primary btn-block p-0">Detail</a>'
+        );
+    }
+</script>

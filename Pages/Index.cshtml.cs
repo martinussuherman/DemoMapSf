@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Syncfusion.EJ2.Maps;
+using System.Collections.Generic;
 
 namespace DemoMapSf.Pages
 {
@@ -16,20 +17,17 @@ namespace DemoMapSf.Pages
             _logger = logger;
         }
 
-        public string[] Toolbars => new string[]
-        {
-            "Zoom",
-            "ZoomIn",
-            "ZoomOut",
-            "Pan",
-            "Reset"
-        };
-
         public string BingKey => _configuration.GetValue<string>("BingKey");
 
-        public object MapsMarker => ReadMarkerFromFile();
+        public object MapsMarkerData => ReadMarkerFromFile();
 
-        public MapsMarkerClusterSettings MapsMarkerClusterSettings => new MapsMarkerClusterSettings
+        public MapsCenterPosition CenterPosition => new MapsCenterPosition
+        {
+            Latitude = -2.8,
+            Longitude = 118
+        };
+
+        public MapsMarkerClusterSettings ClusterSettings => new MapsMarkerClusterSettings
         {
             AllowClusterExpand = true,
             AllowClustering = true,
@@ -43,43 +41,48 @@ namespace DemoMapSf.Pages
             }
         };
 
-        public MapsTooltipSettings MapsTooltipSettings => new MapsTooltipSettings
+        public List<MapsMarker> MarkerSettings => new List<MapsMarker>
         {
-            // Template = "#tooltip-template",
-            Visible = true,
-            ValuePath = "city"
+            new MapsMarker
+            {
+                AnimationDuration = 0,
+                DataSource = MapsMarkerData,
+                Fill = "#ff0000",
+                Height = 10,
+                Shape = MarkerType.Circle,
+                TooltipSettings = _tooltipSettings,
+                Visible = true,
+                Width = 10
+            }
+        };
+
+        public MapsZoomSettings ZoomSettings => new MapsZoomSettings
+        {
+            Enable = true,
+            MouseWheelZoom = false,
+            HorizontalAlignment = Alignment.Near,
+            PinchZooming = true,
+            ShouldZoomInitially = false,
+            Toolbars = _toolbars,
+            ToolBarOrientation = Orientation.Vertical,
+            ZoomFactor = 5
         };
 
         public void OnGet()
         {
-            // MapsZoomSettings mapsZoomSettings = new MapsZoomSettings
-            // {
-            //     ToolBarOrientation = Orientation.Vertical
-            // };
-
-            // Maps maps = new Maps
-            // {
-            //     CenterPosition = new MapsCenterPosition
-            //     {
-            //         Latitude = -2.15,
-            //         Longitude = 118
-            //     },
-            //     ZoomSettings = new MapsZoomSettings
-            //     {
-            //         ZoomFactor = 3
-            //     }
-            // };
+            Maps maps = new Maps
+            {
+                TooltipDisplayMode = TooltipGesture.DoubleClick,
+            };
 
             // MapsLayer mapsLayer = new MapsLayer
             // {
             //     LayerType = ShapeLayerType.Bing,
-            //     BingMapType = BingMapType.AerialWithLabel
-            // };
-
-            // MapsMarker marker = new MapsMarker
-            // {
-            //     Shape = MarkerType.Circle,
-            //     Fill = "#ff0000"
+            //     BingMapType = BingMapType.AerialWithLabel,
+            //     ShapeSettings = new MapsShapeSettings
+            //     {
+            //         Autofill = true
+            //     }
             // };
         }
 
@@ -95,8 +98,21 @@ namespace DemoMapSf.Pages
             return JsonConvert.DeserializeObject(allText);
         }
 
+        private readonly string[] _toolbars = new string[]
+        {
+            "Zoom",
+            "ZoomIn",
+            "ZoomOut",
+            "Pan",
+            "Reset"
+        };
+        private readonly MapsTooltipSettings _tooltipSettings = new MapsTooltipSettings
+        {
+            Template = "#tooltip-template",
+            Visible = true,
+            ValuePath = "location"
+        };
         private readonly ILogger<IndexModel> _logger;
         private readonly IConfiguration _configuration;
-
     }
 }
