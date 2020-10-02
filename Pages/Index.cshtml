@@ -17,7 +17,7 @@
     id="maps" 
     centerPosition="Model.CenterPosition"
     format="n" 
-    tooltipDisplayMode="DoubleClick"
+    tooltipDisplayMode="Click"
     useGroupingSeparator="true" 
     zoomSettings="Model.ZoomSettings">
     @* load="window.onMapLoad" *@
@@ -47,13 +47,9 @@
 
 <div id="tooltip-template" style="display: none;">
 	<div class="protaru-tooltip p-2">
-        <h5 class="text-center">${location}</h5>
-        <h6 class="text-center">${rtr}</h6>
-        <p class="mb-0">Progress: ${progress}</p>
-        <p class="mb-0">Surat Rekom Gub: ${rekomGub}</p>
-        <p class="mb-0">Rapat Lintas Sektor: ${linSek}</p>
-        <p class="mb-0">Surat Persetujuan Substansi: ${perSub}</p>
-        <p class="mb-0">No. Perda: ${perda}</p>
+        <h5 class="text-center">${nama}</h5>
+        <p class="mb-0">Progress: ${progressCount}</p>
+        <p class="mb-0">Perda: ${doneCount}</p>
         <a href="${link}" class="btn btn-primary btn-block p-0">Detail</a>
 	</div>
 </div>

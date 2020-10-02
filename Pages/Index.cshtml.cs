@@ -4,22 +4,26 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Syncfusion.EJ2.Maps;
 using System.Collections.Generic;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace DemoMapSf.Pages
 {
     public class IndexModel : PageModel
     {
         public IndexModel(
+            IHttpClientFactory httpClientFactory,
             ILogger<IndexModel> logger,
             IConfiguration configuration)
         {
             _configuration = configuration;
+            _httpClientFactory = httpClientFactory;
             _logger = logger;
         }
 
         public string BingKey => _configuration.GetValue<string>("BingKey");
 
-        public object MapsMarkerData => ReadMarkerFromFile();
+        public object MapsMarkerData;
 
         public MapsCenterPosition CenterPosition => new MapsCenterPosition
         {
@@ -68,8 +72,11 @@ namespace DemoMapSf.Pages
             ZoomFactor = 5
         };
 
-        public void OnGet()
+        public async Task OnGet()
         {
+            var x = ReadMarkerFromFile();
+            MapsMarkerData = await ReadMarkerFromApi();
+
             Maps maps = new Maps
             {
                 TooltipDisplayMode = TooltipGesture.DoubleClick,
@@ -92,6 +99,15 @@ namespace DemoMapSf.Pages
         //     return JsonConvert.DeserializeObject(allText);
         // }
 
+        private async Task<object> ReadMarkerFromApi()
+        {
+            HttpClient httpClient = _httpClientFactory.CreateClient();
+            HttpResponseMessage response = await httpClient.SendAsync(new HttpRequestMessage(
+                HttpMethod.Get,
+                "https://atr.wordpress-theme.bid/protaru/api/Progress/DaerahMap"));
+            return JsonConvert.DeserializeObject(await response.Content.ReadAsStringAsync());
+        }
+
         private object ReadMarkerFromFile()
         {
             string allText = System.IO.File.ReadAllText("./wwwroot/markercluster.js");
@@ -110,8 +126,9 @@ namespace DemoMapSf.Pages
         {
             Template = "#tooltip-template",
             Visible = true,
-            ValuePath = "location"
+            ValuePath = "nama"
         };
+        private readonly IHttpClientFactory _httpClientFactory;
         private readonly ILogger<IndexModel> _logger;
         private readonly IConfiguration _configuration;
     }
