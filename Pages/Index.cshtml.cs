@@ -74,7 +74,6 @@ namespace DemoMapSf.Pages
 
         public async Task OnGet()
         {
-            var x = ReadMarkerFromFile();
             MapsMarkerData = await ReadMarkerFromApi();
 
             Maps maps = new Maps
@@ -106,12 +105,6 @@ namespace DemoMapSf.Pages
                 HttpMethod.Get,
                 "https://atr.wordpress-theme.bid/protaru/api/Progress/DaerahMap"));
             return JsonConvert.DeserializeObject(await response.Content.ReadAsStringAsync());
-        }
-
-        private object ReadMarkerFromFile()
-        {
-            string allText = System.IO.File.ReadAllText("./wwwroot/markercluster.js");
-            return JsonConvert.DeserializeObject(allText);
         }
 
         private readonly string[] _toolbars = new string[]
