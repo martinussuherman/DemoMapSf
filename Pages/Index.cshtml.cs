@@ -103,7 +103,7 @@ namespace DemoMapSf.Pages
             HttpClient httpClient = _httpClientFactory.CreateClient();
             HttpResponseMessage response = await httpClient.SendAsync(new HttpRequestMessage(
                 HttpMethod.Get,
-                "https://atr.wordpress-theme.bid/protaru/api/Progress/DaerahMap"));
+                "https://tataruang.atrbpn.go.id/protaru/api/Progress/DaerahMap"));
             return JsonConvert.DeserializeObject(await response.Content.ReadAsStringAsync());
         }
 
