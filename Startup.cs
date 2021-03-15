@@ -21,6 +21,7 @@ namespace DemoMapSf
         {
             services.AddRazorPages();
             services.AddHttpClient(Options.DefaultName);
+            services.AddAntiforgery(o => o.HeaderName = "xsrf-token");
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
